@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-rhtap
+  namespace: openshift-gitops 
+  finalizers: ["resources-finalizer.argocd.argoproj.io"] 
+spec:
+  project: default
+  source:
+    path: ./components/hello-rhtap/overlays/development
+    repoURL: https://github.com/prietyc123-qe-org/hello-rhtap-gitops
+    targetRevision: main
+  destination:
+    namespace: pkumari
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated: 
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
